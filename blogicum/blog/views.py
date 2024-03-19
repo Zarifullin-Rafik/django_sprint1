@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 
 posts = [
@@ -42,7 +43,9 @@ posts = [
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
     },
-]
+] 
+
+posts_dict = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -52,8 +55,10 @@ def index(request):
 
 
 def post_detail(request, id):
+    if id > len(posts):
+        raise Http404('Страница не найдена')
     template = 'blog/detail.html'
-    context = {'post': posts[id]}
+    context = {'post': posts_dict[id]}
     return render(request, template, context)
 
 
