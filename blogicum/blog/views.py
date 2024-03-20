@@ -55,7 +55,7 @@ def index(request):
 
 
 def post_detail(request, id):
-    if id > len(posts):
+    if posts_dict.get(id) is None:
         raise Http404('Страница не найдена')
     template = 'blog/detail.html'
     context = {'post': posts_dict[id]}
